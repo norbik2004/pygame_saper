@@ -58,6 +58,14 @@ def get_those_numbers(mines):
                         score += 1
             if (x, y) not in mines:
                 score_tab.append((x, y, score))
+                if score == 0:
+                    pygame.draw.rect(win, (105, 105, 105), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE))
+                    pygame.draw.rect(win, (0, 0, 0), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE), 1)
+                    for dx in range(-1, 2):
+                        for dy in range(-1, 2):
+                            pass
+                        # jutro dodziubie!
+
             score = 0
     return score_tab
 
