@@ -3,8 +3,12 @@ import random
 
 pygame.init()
 
-WIDTH, HEIGHT = 500, 500
+# Change these variables to increase game field, remember that width and height has to be dividable by 50
+WIDTH, HEIGHT = 1000, 1000
+MINES_AMOUNT = 50
 UNIT_SIZE = 50
+
+
 RUNNING = True
 font = pygame.font.Font(None, 70)
 win = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -53,8 +57,8 @@ def draw_tile(x, y):
 
 
 def generate_mines():
-    all_coordinates = [(x, y) for x in range(11) for y in range(11)]
-    mine_list = random.sample(all_coordinates, 25)
+    all_coordinates = [(x, y) for x in range(WIDTH // UNIT_SIZE) for y in range(HEIGHT // UNIT_SIZE)]
+    mine_list = random.sample(all_coordinates, MINES_AMOUNT)
     return mine_list
 
 
@@ -96,7 +100,6 @@ def draw_near_zeros(score):
                                         (y_cords) * UNIT_SIZE + UNIT_SIZE // 2 - text_surface.get_height() // 2))
 
 
-
 def check_if_clicked_mine(mines, score_tab):
     x, y = get_mouse_position()
     draw_tile(x, y)
@@ -111,6 +114,7 @@ def check_if_clicked_mine(mines, score_tab):
             win.blit(MINE_IMG, (x * UNIT_SIZE, y * UNIT_SIZE))
             return False
     return True
+
 
 MINES = generate_mines()
 SCORE_TAB = get_those_numbers(MINES)
@@ -127,6 +131,4 @@ while RUNNING:
             if event.button == 3:
                 draw_flag(FLAG_LIST)
     pygame.display.flip()
-
-
 pygame.quit()
