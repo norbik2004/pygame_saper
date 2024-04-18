@@ -12,6 +12,7 @@ win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Saper")
 MINE_IMG = pygame.image.load("mine.png")
 FLAG_IMG = pygame.image.load("flag.png")
+FLAG_LIST = []
 X, Y = 0, 0
 
 
@@ -27,15 +28,28 @@ def get_mouse_position():
     return mouse_x, mouse_y
 
 
-def draw_flag():
+def draw_flag(flag_list):
     x, y = get_mouse_position()
-    win.blit(FLAG_IMG, (x * UNIT_SIZE, y * UNIT_SIZE))
+    if (x, y) in flag_list:
+        print("flag exists")
+        pygame.draw.rect(win, (255, 255, 255), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE))
+        pygame.draw.rect(win, (128, 128, 128), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE), 1)
+        flag_list.remove((x, y))
+    else:
+        draw_tile(x, y)
+        win.blit(FLAG_IMG, (x * UNIT_SIZE, y * UNIT_SIZE))
+        flag_list.append((x, y))
 
 
 def draw_board():
     for i in range(int(WIDTH / UNIT_SIZE)):
         for j in range(int(HEIGHT / UNIT_SIZE)):
             pygame.draw.rect(win, (128, 128, 128), (X + (i * UNIT_SIZE), Y + (j * UNIT_SIZE), UNIT_SIZE, UNIT_SIZE), 1)
+
+
+def draw_tile(x, y):
+    pygame.draw.rect(win, (105, 105, 105), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE))
+    pygame.draw.rect(win, (0, 0, 0), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE), 1)
 
 
 def generate_mines():
@@ -59,21 +73,33 @@ def get_those_numbers(mines):
             if (x, y) not in mines:
                 score_tab.append((x, y, score))
                 if score == 0:
-                    pygame.draw.rect(win, (105, 105, 105), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE))
-                    pygame.draw.rect(win, (0, 0, 0), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE), 1)
-                    for dx in range(-1, 2):
-                        for dy in range(-1, 2):
-                            pass
-                        # jutro dodziubie!
-
+                    draw_tile(x, y)
             score = 0
     return score_tab
 
 
+def draw_near_zeros(score):
+    for x in range(WIDTH // UNIT_SIZE):
+        for y in range(HEIGHT // UNIT_SIZE):
+            if (x, y, 0) in score:
+                for dx in range(-1, 2):
+                    for dy in range(-1, 2):
+                        if (x+dx, y+dy, 0) not in score:
+                            x_cords = x + dx
+                            y_cords = y+dy
+                            for score_one in score:
+                                if x_cords == score_one[0] and y_cords == score_one[1] in score_one:
+                                    draw_tile(x_cords, y_cords)
+                                    text_surface = font.render(str(score_one[2]), True, (255, 255, 255))
+                                    win.blit(text_surface, (
+                                        (x_cords) * UNIT_SIZE + UNIT_SIZE // 2 - text_surface.get_width() // 2,
+                                        (y_cords) * UNIT_SIZE + UNIT_SIZE // 2 - text_surface.get_height() // 2))
+
+
+
 def check_if_clicked_mine(mines, score_tab):
     x, y = get_mouse_position()
-    pygame.draw.rect(win, (105, 105, 105), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE))
-    pygame.draw.rect(win, (0, 0, 0), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE), 1)
+    draw_tile(x, y)
     for score in score_tab:
         if score[0] == x and score[1] == y:
             if score[2] != 0:
@@ -86,11 +112,10 @@ def check_if_clicked_mine(mines, score_tab):
             return False
     return True
 
-
 MINES = generate_mines()
 SCORE_TAB = get_those_numbers(MINES)
 main()
-
+draw_near_zeros(SCORE_TAB)
 
 while RUNNING:
     for event in pygame.event.get():
@@ -100,7 +125,7 @@ while RUNNING:
             if event.button == 1:
                 RUNNING = check_if_clicked_mine(MINES, SCORE_TAB)
             if event.button == 3:
-                draw_flag()
+                draw_flag(FLAG_LIST)
     pygame.display.flip()
 
 
