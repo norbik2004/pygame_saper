@@ -1,3 +1,4 @@
+LEFT CLICK TO PRESS TILE, RIGHT CLICK TO PLACE FLAG
 the board you start with, its allways randomly generated
 
 
