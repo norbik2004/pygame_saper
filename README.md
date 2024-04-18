@@ -9,7 +9,7 @@ some flags
 
 ![image](https://github.com/norbik2004/pygame_saper/assets/128638079/7b49076c-52c6-4041-9d7e-375005a55649)
 
-bigger board by changing only two variables here: 
+bigger board by changing only two variables here: <br>
 ![image](https://github.com/norbik2004/pygame_saper/assets/128638079/0143609a-4c0c-4b13-ae23-2832eb419cf3)
 
 
