@@ -1,3 +1,4 @@
-![image](https://github.com/norbik2004/pygame_saper/assets/128638079/92284d9a-ee39-429f-9b5c-8ad1bdc2354e)
+the board you start with, its allways randomly generated
 
-the board you start with
+
+![image](https://github.com/norbik2004/pygame_saper/assets/128638079/6e7f25c9-1f25-4f42-9c04-79f6e40247f3)
