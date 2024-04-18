@@ -4,8 +4,8 @@ import random
 pygame.init()
 
 # Change these variables to increase game field, remember that width and height has to be dividable by 50
-WIDTH, HEIGHT = 1000, 1000
-MINES_AMOUNT = 50
+WIDTH, HEIGHT = 1500, 1000
+MINES_AMOUNT = 100
 UNIT_SIZE = 50
 
 RUNNING = True
@@ -34,7 +34,6 @@ def get_mouse_position():
 def draw_flag(flag_list):
     x, y = get_mouse_position()
     if (x, y) in flag_list:
-        print("flag exists")
         pygame.draw.rect(win, (255, 255, 255), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE))
         pygame.draw.rect(win, (128, 128, 128), (x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE), 1)
         flag_list.remove((x, y))
