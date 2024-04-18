@@ -4,7 +4,7 @@ import random
 pygame.init()
 
 # Change these variables to increase game field, remember that width and height has to be dividable by 50 because of the textures
-WIDTH, HEIGHT = 1500, 1000
+WIDTH, HEIGHT = 1900, 1050
 MINES_AMOUNT = 100
 UNIT_SIZE = 50
 
